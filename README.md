@@ -10,7 +10,7 @@ It allows you to open, edit, filter, add/remove rows and columns in spreadsheets
 
 > Main editor window (Dark Mode enabled) displaying a spreadsheet with action buttons.
 
-![screenshot](./public/screenshot.png)  
+![screenshot](./public/Interface_example.png)  
 
 ---
 
