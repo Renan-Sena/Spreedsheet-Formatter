@@ -10,3 +10,10 @@ __pycache__/
 
 build/
 dist/
+
+spike_three.py
+
+test.py
+
+public/
+*favicon.ico

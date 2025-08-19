@@ -7,6 +7,7 @@ from openpyxl.styles import Font
 from openpyxl.worksheet.table import Table, TableStyleInfo
 from openpyxl.utils import get_column_letter
 
+from PySide6 import QtCore
 from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex
 from PySide6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
@@ -14,7 +15,7 @@ from PySide6.QtWidgets import (
     QDialog, QLabel, QLineEdit, QFormLayout, QDialogButtonBox,
     QRadioButton, QGridLayout, QScrollArea, QHeaderView
 )
-from PySide6.QtGui import QAction
+from PySide6.QtGui import QAction, QIcon
 
 
 class PandasModel(QAbstractTableModel):
@@ -95,7 +96,6 @@ class FiltrosDialog(QDialog):
         super().__init__(parent)
         self.setWindowTitle("Editar Filtros")
         self.setMinimumSize(420, 480)
-        self.filtros = {}
 
         layout = QVBoxLayout(self)
 
@@ -123,6 +123,18 @@ class FiltrosDialog(QDialog):
         btns.accepted.connect(self.accept)
         btns.rejected.connect(self.reject)
         layout.addWidget(btns)
+
+    def get_filters(self):
+        """Abre o diálogo e retorna um dict {coluna: texto} apenas com valores não vazios.
+        Retorna None se o usuário cancelar."""
+        if self.exec() != QDialog.Accepted:
+            return None
+        result = {}
+        for col, le in self.inputs.items():
+            txt = le.text().strip()
+            if txt:
+                result[col] = txt
+        return result
 
 
 class InserirLinhaDialog(QDialog):
@@ -256,20 +268,31 @@ class PlanilhaApp(QMainWindow):
         hb = QHBoxLayout()
         hb.setSpacing(12)
 
-        def make_btn(txt, slot):
-            b = QPushButton(txt)
-            b.clicked.connect(slot)
-            b.setMinimumWidth(140)
-            return b
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        ICONS_DIR = os.path.join(BASE_DIR, "public", "icons")
 
-        hb.addWidget(make_btn("📂 Abrir Planilha", self.abrir_arquivo))
-        hb.addWidget(make_btn("➕ Inserir Linha", self.adicionar_linha))
-        hb.addWidget(make_btn("➖ Remover Linha", self.remover_linha))
-        hb.addWidget(make_btn("🧱 Adicionar Coluna", self.adicionar_coluna))
-        hb.addWidget(make_btn("🧹 Remover Coluna", self.remover_coluna))
-        hb.addWidget(make_btn("🎛️ Filtros", self.editar_filtros_colunas))
+        def make_btn(text: str, icon_file: str, slot):
+            icon_path = os.path.join(ICONS_DIR, icon_file)
+            btn = QPushButton(text)
+            # carrega ícone se existir; caso contrário, segue só com texto
+            if os.path.exists(icon_path):
+                btn.setIcon(QIcon(icon_path))
+                btn.setIconSize(QtCore.QSize(20, 20))
+            else:
+                # fallback leve para não quebrar execução
+                btn.setToolTip(f"Ícone não encontrado: {icon_path}")
+            btn.clicked.connect(slot)
+            btn.setMinimumWidth(160)
+            return btn
+
+        hb.addWidget(make_btn("Abrir Planilha", "folder-open-solid-full.svg", self.abrir_arquivo))
+        hb.addWidget(make_btn("Inserir Linha", "grip-lines-solid-full.svg", self.adicionar_linha))
+        hb.addWidget(make_btn("Remover Linha", "trash-can-solid-full.svg.svg", self.remover_linha))
+        hb.addWidget(make_btn("Adicionar Coluna", "table-columns-solid-full.svg", self.adicionar_coluna))
+        hb.addWidget(make_btn("Remover Coluna", "trash-can-solid-full.svg", self.remover_coluna))
+        hb.addWidget(make_btn("Filtros", "filter-solid-full.svg", self.editar_filtros_colunas))
         hb.addStretch()
-        hb.addWidget(make_btn("💾 Salvar", self.salvar_planilha))
+        hb.addWidget(make_btn("Salvar", "floppy-disk-solid-full.svg", self.salvar_planilha))
         vbox.addLayout(hb)
 
         self.view = QTableView()
@@ -508,4 +531,3 @@ QDialog { background-color: #2b2b2b; }
     win = PlanilhaApp()
     win.show()
     sys.exit(app.exec())
-

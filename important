@@ -1,1 +1,3 @@
 pyinstaller --onefile --windowed --icon=public/favicon.ico gerador_planilhas.py
+
+venv\Scripts\activate - ativar o venv
