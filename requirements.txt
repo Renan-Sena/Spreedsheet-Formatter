@@ -6,4 +6,3 @@ pyinstaller
 msal
 requests
 pyside6
-PyQt5
