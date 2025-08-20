@@ -1,8 +1,4 @@
 pandas
-ttkbootstrap
 openpyxl
-xlrd
 pyinstaller
-msal
-requests
 pyside6
