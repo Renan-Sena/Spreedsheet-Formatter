@@ -19,7 +19,6 @@ It allows you to open, edit, filter, add/remove rows and columns in spreadsheets
 - [PySide6](https://pypi.org/project/PySide6/)
 - [Pandas](https://pandas.pydata.org/)
 - [OpenPyXL](https://openpyxl.readthedocs.io/)
-- [Qt](https://doc.qt.io/qtforpython/)
 
 ---
 
