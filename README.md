@@ -10,7 +10,7 @@ It allows you to open, edit, filter, add/remove rows and columns in spreadsheets
 
 > Main editor window (Dark Mode enabled) displaying a spreadsheet with action buttons.
 
-![screenshot](./public/Interface_example.png)  
+![screenshot](./spreadsheet_app/public/Interface_example.png)  
 
 ---
 
@@ -36,6 +36,16 @@ git clone https://github.com/your-username/spreadsheet-editor.git
 ```` 
 ---
 
+## ▶️ How to run the code
+
+1. Open the folder: ``spreadsheet_app``
+2. Run in the terminal
+```bash
+  python index.py
+```
+
+---
+
 ## 🏗️ Code Structure (Summary)
 
 - **`PandasModel`**  
@@ -44,12 +54,12 @@ git clone https://github.com/your-username/spreadsheet-editor.git
 
 - **Dialogs**  
   Small windows for user input:  
-  - `FiltrosDialog` → set column filters  
-  - `InserirLinhaDialog` → add a row  
-  - `RemoverLinhaDialog` → remove a row  
-  - `TextoSimplesDialog` → simple text input (e.g., column name)  
+  - `filter_dialog.py` → set column filters  
+  - `insert_rows_dialog.py` → add a row  
+  - `remove_rows_dialog.py` → remove a row  
+  - `plain_text_dialog.py` → simple text input (e.g., column name)  
 
-- **`PlanilhaApp` (Main Window)**  
+- **`core/spreadsheet.py` (Main Window)**  
   Main application window. Manages the UI and provides actions:  
   - Open/Save spreadsheet (`.xls`, `.xlsx`)  
   - Add/Remove rows and columns  
